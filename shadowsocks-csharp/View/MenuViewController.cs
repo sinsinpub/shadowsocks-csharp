@@ -57,9 +57,13 @@ namespace Shadowsocks.View
 
             LoadCurrentConfiguration();
 
-            updateChecker.CheckUpdate();
+            Configuration config = controller.GetConfiguration();
+            if (config.updateCheck)
+            {
+                updateChecker.CheckUpdate();
+            }
 
-            if (controller.GetConfiguration().isDefault)
+            if (config.isDefault)
             {
                 _isFirstRun = true;
                 ShowConfigForm();

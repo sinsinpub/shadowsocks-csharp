@@ -27,6 +27,7 @@ namespace Shadowsocks.View
 
             // a dirty hack
             this.ServersListBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.FrontendProxyGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PerformLayout();
 
             UpdateTexts();
@@ -49,6 +50,9 @@ namespace Shadowsocks.View
             ProxyPortLabel.Text = I18N.GetString("Proxy Port");
             RemarksLabel.Text = I18N.GetString("Remarks");
             ServerGroupBox.Text = I18N.GetString("Server");
+            FrontendProxyGroupBox.Text = I18N.GetString("Front Proxy");
+            PacPortLabel.Text = I18N.GetString("PAC Server Port");
+            HttpPortLabel.Text = I18N.GetString("HTTP Proxy Port");
             OKButton.Text = I18N.GetString("OK");
             MyCancelButton.Text = I18N.GetString("Cancel");
             this.Text = I18N.GetString("Edit Servers");
@@ -99,6 +103,28 @@ namespace Shadowsocks.View
             return false;
         }
 
+        private bool SaveFrontendProxyConfig()
+        {
+            try
+            {
+                _modifiedConfiguration.pacPort = int.Parse(PacPortTextBox.Text);
+                _modifiedConfiguration.httpPort = int.Parse(HttpPortTextBox.Text);
+                Configuration.CheckPort(_modifiedConfiguration.pacPort);
+                // no checking for http port, allow to disable HTTP proxy
+                //Configuration.CheckPort(_modifiedConfiguration.httpPort);
+                return true;
+            }
+            catch (FormatException)
+            {
+                MessageBox.Show(I18N.GetString("Illegal port number format"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            return false;
+        }
+
         private void LoadSelectedServer()
         {
             if (ServersListBox.SelectedIndex >= 0 && ServersListBox.SelectedIndex < _modifiedConfiguration.configs.Count)
@@ -136,11 +162,12 @@ namespace Shadowsocks.View
             _oldSelectedIndex = _modifiedConfiguration.index;
             ServersListBox.SelectedIndex = _modifiedConfiguration.index;
             LoadSelectedServer();
+            this.PacPortTextBox.Text = _modifiedConfiguration.pacPort.ToString();
+            this.HttpPortTextBox.Text = _modifiedConfiguration.httpPort.ToString();
         }
 
         private void ConfigForm_Load(object sender, EventArgs e)
         {
-
         }
 
         private void ServersListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -202,7 +229,11 @@ namespace Shadowsocks.View
                 MessageBox.Show(I18N.GetString("Please add at least one server"));
                 return;
             }
-            controller.SaveServers(_modifiedConfiguration.configs);
+            if (!SaveFrontendProxyConfig())
+            {
+                return;
+            }
+            controller.SaveProxyConfigs(_modifiedConfiguration);
             this.Close();
         }
 

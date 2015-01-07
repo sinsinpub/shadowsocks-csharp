@@ -15,6 +15,9 @@ namespace Shadowsocks.Model
         public bool global;
         public bool enabled;
         public bool shareOverLan;
+        public int pacPort;
+        public int httpPort;
+        public bool updateCheck;
         public bool isDefault;
 
         private static string CONFIG_FILE = "gui-config.json";
@@ -36,7 +39,7 @@ namespace Shadowsocks.Model
             CheckPort(server.local_port);
             CheckPort(server.server_port);
             CheckPassword(server.password);
-            CheckServer(server.server);
+            CheckServerAddr(server.server);
         }
 
         public static Configuration Load()
@@ -57,6 +60,9 @@ namespace Shadowsocks.Model
                 return new Configuration
                 {
                     index = 0,
+                    pacPort = PACServer.DEFAULT_PORT,
+                    httpPort = PolipoRunner.DEFAULT_PORT,
+                    updateCheck = true,
                     isDefault = true,
                     configs = new List<Server>()
                     {
@@ -105,15 +111,15 @@ namespace Shadowsocks.Model
             };
         }
 
-        private static void Assert(bool condition)
+        public static void Assert(bool condition)
         {
             if (!condition)
             {
-                throw new Exception(I18N.GetString("assertion failure"));
+                throw new Exception(I18N.GetString("Assertion failure"));
             }
         }
 
-        private static void CheckPort(int port)
+        public static void CheckPort(int port)
         {
             if (port <= 0 || port > 65535)
             {
@@ -129,7 +135,7 @@ namespace Shadowsocks.Model
             }
         }
 
-        private static void CheckServer(string server)
+        private static void CheckServerAddr(string server)
         {
             if (string.IsNullOrEmpty(server))
             {
