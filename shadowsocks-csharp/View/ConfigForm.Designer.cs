@@ -105,7 +105,7 @@
             this.RemarksTextBox.MaxLength = 32;
             this.RemarksTextBox.Name = "RemarksTextBox";
             this.RemarksTextBox.Size = new System.Drawing.Size(160, 21);
-            this.RemarksTextBox.TabIndex = 10;
+            this.RemarksTextBox.TabIndex = 6;
             this.RemarksTextBox.WordWrap = false;
             // 
             // RemarksLabel
@@ -115,7 +115,7 @@
             this.RemarksLabel.Location = new System.Drawing.Point(30, 144);
             this.RemarksLabel.Name = "RemarksLabel";
             this.RemarksLabel.Size = new System.Drawing.Size(47, 12);
-            this.RemarksLabel.TabIndex = 9;
+            this.RemarksLabel.TabIndex = 0;
             this.RemarksLabel.Text = "Remarks";
             // 
             // IPLabel
@@ -135,7 +135,7 @@
             this.ServerPortLabel.Location = new System.Drawing.Point(6, 37);
             this.ServerPortLabel.Name = "ServerPortLabel";
             this.ServerPortLabel.Size = new System.Drawing.Size(71, 12);
-            this.ServerPortLabel.TabIndex = 1;
+            this.ServerPortLabel.TabIndex = 0;
             this.ServerPortLabel.Text = "Server Port";
             // 
             // ProxyPortTextBox
@@ -145,7 +145,7 @@
             this.ProxyPortTextBox.MaxLength = 10;
             this.ProxyPortTextBox.Name = "ProxyPortTextBox";
             this.ProxyPortTextBox.Size = new System.Drawing.Size(160, 21);
-            this.ProxyPortTextBox.TabIndex = 4;
+            this.ProxyPortTextBox.TabIndex = 5;
             this.ProxyPortTextBox.WordWrap = false;
             // 
             // ProxyPortLabel
@@ -155,7 +155,7 @@
             this.ProxyPortLabel.Location = new System.Drawing.Point(6, 117);
             this.ProxyPortLabel.Name = "ProxyPortLabel";
             this.ProxyPortLabel.Size = new System.Drawing.Size(71, 12);
-            this.ProxyPortLabel.TabIndex = 3;
+            this.ProxyPortLabel.TabIndex = 0;
             this.ProxyPortLabel.Text = "SOCKS5 Port";
             // 
             // PasswordLabel
@@ -165,7 +165,7 @@
             this.PasswordLabel.Location = new System.Drawing.Point(24, 64);
             this.PasswordLabel.Name = "PasswordLabel";
             this.PasswordLabel.Size = new System.Drawing.Size(53, 12);
-            this.PasswordLabel.TabIndex = 2;
+            this.PasswordLabel.TabIndex = 0;
             this.PasswordLabel.Text = "Password";
             // 
             // IPTextBox
@@ -175,7 +175,7 @@
             this.IPTextBox.MaxLength = 512;
             this.IPTextBox.Name = "IPTextBox";
             this.IPTextBox.Size = new System.Drawing.Size(160, 21);
-            this.IPTextBox.TabIndex = 0;
+            this.IPTextBox.TabIndex = 1;
             this.IPTextBox.WordWrap = false;
             // 
             // ServerPortTextBox
@@ -185,7 +185,7 @@
             this.ServerPortTextBox.MaxLength = 10;
             this.ServerPortTextBox.Name = "ServerPortTextBox";
             this.ServerPortTextBox.Size = new System.Drawing.Size(160, 21);
-            this.ServerPortTextBox.TabIndex = 1;
+            this.ServerPortTextBox.TabIndex = 2;
             this.ServerPortTextBox.WordWrap = false;
             // 
             // PasswordTextBox
@@ -196,7 +196,7 @@
             this.PasswordTextBox.Name = "PasswordTextBox";
             this.PasswordTextBox.PasswordChar = '*';
             this.PasswordTextBox.Size = new System.Drawing.Size(160, 21);
-            this.PasswordTextBox.TabIndex = 2;
+            this.PasswordTextBox.TabIndex = 3;
             this.PasswordTextBox.WordWrap = false;
             // 
             // EncryptionLabel
@@ -206,7 +206,7 @@
             this.EncryptionLabel.Location = new System.Drawing.Point(12, 91);
             this.EncryptionLabel.Name = "EncryptionLabel";
             this.EncryptionLabel.Size = new System.Drawing.Size(65, 12);
-            this.EncryptionLabel.TabIndex = 8;
+            this.EncryptionLabel.TabIndex = 0;
             this.EncryptionLabel.Text = "Encryption";
             // 
             // EncryptionSelect
@@ -229,7 +229,7 @@
             this.EncryptionSelect.Location = new System.Drawing.Point(83, 87);
             this.EncryptionSelect.Name = "EncryptionSelect";
             this.EncryptionSelect.Size = new System.Drawing.Size(160, 20);
-            this.EncryptionSelect.TabIndex = 3;
+            this.EncryptionSelect.TabIndex = 4;
             // 
             // OKButton
             // 
@@ -239,7 +239,7 @@
             this.OKButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(75, 23);
-            this.OKButton.TabIndex = 8;
+            this.OKButton.TabIndex = 11;
             this.OKButton.Text = "OK";
             this.OKButton.UseVisualStyleBackColor = true;
             this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
@@ -252,7 +252,7 @@
             this.MyCancelButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
             this.MyCancelButton.Name = "MyCancelButton";
             this.MyCancelButton.Size = new System.Drawing.Size(75, 23);
-            this.MyCancelButton.TabIndex = 9;
+            this.MyCancelButton.TabIndex = 12;
             this.MyCancelButton.Text = "Cancel";
             this.MyCancelButton.UseVisualStyleBackColor = true;
             this.MyCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
@@ -264,7 +264,7 @@
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(3, 6, 0, 3);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(80, 23);
-            this.DeleteButton.TabIndex = 7;
+            this.DeleteButton.TabIndex = 8;
             this.DeleteButton.Text = "&Delete";
             this.DeleteButton.UseVisualStyleBackColor = true;
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
@@ -276,7 +276,7 @@
             this.AddButton.Margin = new System.Windows.Forms.Padding(0, 6, 3, 3);
             this.AddButton.Name = "AddButton";
             this.AddButton.Size = new System.Drawing.Size(80, 23);
-            this.AddButton.TabIndex = 6;
+            this.AddButton.TabIndex = 7;
             this.AddButton.Text = "&Add";
             this.AddButton.UseVisualStyleBackColor = true;
             this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
@@ -290,7 +290,7 @@
             this.ServerGroupBox.Margin = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.ServerGroupBox.Name = "ServerGroupBox";
             this.ServerGroupBox.Size = new System.Drawing.Size(260, 205);
-            this.ServerGroupBox.TabIndex = 6;
+            this.ServerGroupBox.TabIndex = 0;
             this.ServerGroupBox.TabStop = false;
             this.ServerGroupBox.Text = "Server";
             // 
@@ -303,7 +303,7 @@
             this.ServersListBox.Margin = new System.Windows.Forms.Padding(0);
             this.ServersListBox.Name = "ServersListBox";
             this.ServersListBox.Size = new System.Drawing.Size(166, 148);
-            this.ServersListBox.TabIndex = 5;
+            this.ServersListBox.TabIndex = 0;
             this.ServersListBox.SelectedIndexChanged += new System.EventHandler(this.ServersListBox_SelectedIndexChanged);
             // 
             // tableLayoutPanel2
@@ -326,7 +326,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.Size = new System.Drawing.Size(438, 335);
-            this.tableLayoutPanel2.TabIndex = 7;
+            this.tableLayoutPanel2.TabIndex = 0;
             // 
             // tableLayoutPanel3
             // 
@@ -345,7 +345,7 @@
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel3.Size = new System.Drawing.Size(159, 26);
-            this.tableLayoutPanel3.TabIndex = 8;
+            this.tableLayoutPanel3.TabIndex = 0;
             // 
             // tableLayoutPanel4
             // 
@@ -363,7 +363,7 @@
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.Size = new System.Drawing.Size(166, 32);
-            this.tableLayoutPanel4.TabIndex = 8;
+            this.tableLayoutPanel4.TabIndex = 0;
             // 
             // FrontendProxyGroupBox
             // 
@@ -374,7 +374,7 @@
             this.FrontendProxyGroupBox.Margin = new System.Windows.Forms.Padding(12, 0, 0, 0);
             this.FrontendProxyGroupBox.Name = "FrontendProxyGroupBox";
             this.FrontendProxyGroupBox.Size = new System.Drawing.Size(260, 98);
-            this.FrontendProxyGroupBox.TabIndex = 9;
+            this.FrontendProxyGroupBox.TabIndex = 0;
             this.FrontendProxyGroupBox.TabStop = false;
             this.FrontendProxyGroupBox.Text = "Front Proxy";
             // 
@@ -401,7 +401,7 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.Size = new System.Drawing.Size(248, 60);
-            this.tableLayoutPanel5.TabIndex = 1;
+            this.tableLayoutPanel5.TabIndex = 0;
             // 
             // PacPortLabel
             // 
@@ -410,7 +410,7 @@
             this.PacPortLabel.Location = new System.Drawing.Point(6, 10);
             this.PacPortLabel.Name = "PacPortLabel";
             this.PacPortLabel.Size = new System.Drawing.Size(95, 12);
-            this.PacPortLabel.TabIndex = 1;
+            this.PacPortLabel.TabIndex = 0;
             this.PacPortLabel.Text = "PAC Server Port";
             // 
             // HttpPortTextBox
@@ -420,7 +420,7 @@
             this.HttpPortTextBox.MaxLength = 10;
             this.HttpPortTextBox.Name = "HttpPortTextBox";
             this.HttpPortTextBox.Size = new System.Drawing.Size(135, 21);
-            this.HttpPortTextBox.TabIndex = 4;
+            this.HttpPortTextBox.TabIndex = 10;
             this.HttpPortTextBox.WordWrap = false;
             // 
             // HttpPortLabel
@@ -430,7 +430,7 @@
             this.HttpPortLabel.Location = new System.Drawing.Point(6, 37);
             this.HttpPortLabel.Name = "HttpPortLabel";
             this.HttpPortLabel.Size = new System.Drawing.Size(95, 12);
-            this.HttpPortLabel.TabIndex = 3;
+            this.HttpPortLabel.TabIndex = 0;
             this.HttpPortLabel.Text = "HTTP Proxy Port";
             // 
             // PacPortTextBox
@@ -440,7 +440,7 @@
             this.PacPortTextBox.MaxLength = 10;
             this.PacPortTextBox.Name = "PacPortTextBox";
             this.PacPortTextBox.Size = new System.Drawing.Size(135, 21);
-            this.PacPortTextBox.TabIndex = 1;
+            this.PacPortTextBox.TabIndex = 9;
             this.PacPortTextBox.WordWrap = false;
             // 
             // ConfigForm
