@@ -13,8 +13,9 @@ namespace Shadowsocks.Controller
 {
     class PACServer
     {
-        public static int DEFAULT_PORT = 8093;
-        private static string PAC_FILE = "pac.txt";
+        public const int DEFAULT_PORT = 8093;
+        private const string DEFAULT_PAC_FILE = "pac.txt";
+        private static string pacFile;
         private static Configuration config;
 
         Socket _listener;
@@ -65,16 +66,25 @@ namespace Shadowsocks.Controller
             }
         }
 
+        public string GetPacFilePath()
+        {
+            if (String.IsNullOrEmpty(pacFile))
+            {
+                pacFile = Path.Combine(Configuration.GetConfigPath(), DEFAULT_PAC_FILE);
+            }
+            return pacFile;
+        }
+
         public string TouchPACFile()
         {
-            if (File.Exists(PAC_FILE))
+            if (File.Exists(GetPacFilePath()))
             {
-                return PAC_FILE;
+                return pacFile;
             }
             else
             {
-                FileManager.UncompressFile(PAC_FILE, Resources.proxy_pac_txt);
-                return PAC_FILE;
+                FileManager.UncompressFile(pacFile, Resources.proxy_pac_txt);
+                return pacFile;
             }
         }
 
@@ -124,9 +134,9 @@ namespace Shadowsocks.Controller
 
         private string GetPACContent()
         {
-            if (File.Exists(PAC_FILE))
+            if (File.Exists(GetPacFilePath()))
             {
-                return File.ReadAllText(PAC_FILE, Encoding.UTF8);
+                return File.ReadAllText(pacFile, Encoding.UTF8);
             }
             else
             {
@@ -206,9 +216,9 @@ Connection: Close
             {
                 watcher.Dispose();
             }
-            watcher = new FileSystemWatcher(Directory.GetCurrentDirectory());
+            watcher = new FileSystemWatcher(Path.GetDirectoryName(GetPacFilePath()));
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            watcher.Filter = PAC_FILE;
+            watcher.Filter = DEFAULT_PAC_FILE;
             watcher.Changed += Watcher_Changed;
             watcher.Created += Watcher_Changed;
             watcher.Deleted += Watcher_Changed;
