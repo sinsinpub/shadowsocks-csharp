@@ -209,9 +209,9 @@ namespace Shadowsocks.Controller
                 local = new Local(_config);
                 local.Start();
 
-                // Start PAC server if and only if proxy is enabled and HTTP proxy is also running
+                // Start PAC server if HTTP proxy is also running
                 bindingPort = _config.pacPort;
-                if (_config.enabled && polipoRunner.isRunning())
+                if (polipoRunner.isRunning())
                 {
                     pacServer.Start(_config);
                 }

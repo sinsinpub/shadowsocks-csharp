@@ -27,7 +27,7 @@ namespace Shadowsocks.Controller
                         p.Kill();
                         p.WaitForExit();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
                         // Kill polipo quietly
                         // Console.WriteLine(e.ToString());
