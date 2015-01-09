@@ -209,18 +209,11 @@ namespace Shadowsocks.Controller
             try
             {
                 // Start polipo (HTTP proxy) if and only if configured port is in range
-                // To disable HTTP proxy, user could set port to 0
+                // To disable HTTP proxy & PAC server, set port out of range
                 if (bindingPort > 0 && bindingPort <= 65535)
                 {
                     // No exception will be thrown here as forked polipo process just exits with delay
                     polipoRunner.Start(_config);
-                }
-                else
-                {
-                    if (_config.enabled)
-                    {
-                        throw new Exception(I18N.GetString("HTTP proxy port out of range"));
-                    }
                 }
 
                 // Start sslocal SOCKS5 proxy
@@ -230,7 +223,7 @@ namespace Shadowsocks.Controller
 
                 // Start PAC server if HTTP proxy is also running
                 bindingPort = _config.pacPort;
-                if (polipoRunner.isRunning())
+                if (bindingPort > 0 && bindingPort <= 65535 && polipoRunner.isRunning())
                 {
                     pacServer.Start(_config);
                 }
