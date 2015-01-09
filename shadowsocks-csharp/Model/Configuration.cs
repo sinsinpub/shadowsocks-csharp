@@ -17,7 +17,8 @@ namespace Shadowsocks.Model
         public bool shareOverLan;
         public bool isDefault;
 
-        private static string CONFIG_FILE = "gui-config.json";
+        private const string CONFIG_FILE = "gui-config.json";
+        private static string configPath;
 
         public Server GetCurrentServer()
         {
@@ -43,7 +44,11 @@ namespace Shadowsocks.Model
         {
             try
             {
-                string configContent = File.ReadAllText(CONFIG_FILE);
+                if (String.IsNullOrEmpty(configPath))
+                {
+                    CheckConfigPathWritable();
+                }
+                string configContent = File.ReadAllText(Path.Combine(configPath, CONFIG_FILE));
                 Configuration config = SimpleJson.SimpleJson.DeserializeObject<Configuration>(configContent, new JsonSerializerStrategy());
                 config.isDefault = false;
                 return config;
@@ -79,7 +84,8 @@ namespace Shadowsocks.Model
             config.isDefault = false;
             try
             {
-                using (StreamWriter sw = new StreamWriter(File.Open(CONFIG_FILE, FileMode.Create)))
+                CheckConfigPathWritable();
+                using (StreamWriter sw = new StreamWriter(File.Open(Path.Combine(configPath, CONFIG_FILE), FileMode.Create)))
                 {
                     string jsonString = SimpleJson.SimpleJson.SerializeObject(config);
                     sw.Write(jsonString);
@@ -103,6 +109,11 @@ namespace Shadowsocks.Model
                 password = "",
                 remarks = ""
             };
+        }
+
+        public static string GetConfigPath()
+        {
+            return configPath;
         }
 
         private static void Assert(bool condition)
@@ -135,6 +146,45 @@ namespace Shadowsocks.Model
             {
                 throw new ArgumentException(I18N.GetString("Server IP can not be blank"));
             }
+        }
+
+        private static bool CheckConfigPathWritable()
+        {
+            if (String.IsNullOrEmpty(configPath))
+            {
+                configPath = Path.GetDirectoryName(Application.ExecutablePath);
+            }
+            // Get rid of version
+            string userAppDataPath = Path.GetDirectoryName(Application.UserAppDataPath);
+            try
+            {
+                System.Security.AccessControl.DirectorySecurity ds = Directory.GetAccessControl(configPath);
+                // Still try to write something...
+                string tmpFile = Path.Combine(configPath, Path.GetFileNameWithoutExtension(CONFIG_FILE) + ".tmp");
+                using (StreamWriter sw = new StreamWriter(File.Open(tmpFile, FileMode.Create)))
+                {
+                    sw.Write(0x00);
+                    sw.Flush();
+                    sw.Close();
+                }
+                if (File.Exists(tmpFile))
+                {
+                    File.Delete(tmpFile);
+                    return true;
+                }
+            }
+            catch (UnauthorizedAccessException e)
+            {
+                if (String.Equals(configPath, userAppDataPath)) {
+                    throw e;
+                }
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            configPath = userAppDataPath;
+            return false;
         }
 
         private class JsonSerializerStrategy : SimpleJson.PocoJsonSerializerStrategy

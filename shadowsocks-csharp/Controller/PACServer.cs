@@ -14,8 +14,8 @@ namespace Shadowsocks.Controller
 {
     class PACServer
     {
-        private static int PORT = 8093;
-        public static string PAC_FILE = "pac.txt";
+        public const int PORT = 8093;
+        private const string DEFAULT_PAC_FILE = "pac.txt";
         private static Configuration config;
 
         Socket _listener;
@@ -66,16 +66,25 @@ namespace Shadowsocks.Controller
             }
         }
 
+        public string GetPacFilePath()
+        {
+            if (String.IsNullOrEmpty(pacFile))
+            {
+                pacFile = Path.Combine(Configuration.GetConfigPath(), DEFAULT_PAC_FILE);
+            }
+            return pacFile;
+        }
+
         public string TouchPACFile()
         {
-            if (File.Exists(PAC_FILE))
+            if (File.Exists(GetPacFilePath()))
             {
-                return PAC_FILE;
+                return pacFile;
             }
             else
             {
-                FileManager.UncompressFile(PAC_FILE, Resources.proxy_pac_txt);
-                return PAC_FILE;
+                FileManager.UncompressFile(pacFile, Resources.proxy_pac_txt);
+                return pacFile;
             }
         }
 
@@ -125,9 +134,9 @@ namespace Shadowsocks.Controller
 
         private string GetPACContent()
         {
-            if (File.Exists(PAC_FILE))
+            if (File.Exists(GetPacFilePath()))
             {
-                return File.ReadAllText(PAC_FILE, Encoding.UTF8);
+                return File.ReadAllText(pacFile, Encoding.UTF8);
             }
             else
             {
@@ -195,9 +204,9 @@ Connection: Close
             {
                 watcher.Dispose();
             }
-            watcher = new FileSystemWatcher(Directory.GetCurrentDirectory());
+            watcher = new FileSystemWatcher(Path.GetDirectoryName(GetPacFilePath()));
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            watcher.Filter = PAC_FILE;
+            watcher.Filter = DEFAULT_PAC_FILE;
             watcher.Changed += Watcher_Changed;
             watcher.Created += Watcher_Changed;
             watcher.Deleted += Watcher_Changed;
@@ -215,7 +224,7 @@ Connection: Close
 
         private string GetPACAddress(byte[] requestBuf, IPEndPoint localEndPoint)
         {
-            string proxy = "PROXY " + localEndPoint.Address + ":8123;";
+            string proxy = "PROXY " + localEndPoint.Address + ":" + PolipoRunner.PORT + ";";
             //try
             //{
             //    string requestString = Encoding.UTF8.GetString(requestBuf);

@@ -11,6 +11,7 @@ namespace Shadowsocks.Controller
 {
     class PolipoRunner
     {
+        public const int PORT = 8123;
         private Process _process;
 
         public void Start(Configuration configuration)
