@@ -13,8 +13,6 @@ namespace Shadowsocks.Controller
     {
         private const string GFWLIST_URL = "https://autoproxy-gfwlist.googlecode.com/svn/trunk/gfwlist.txt";
 
-        private static string PAC_FILE = PACServer.PAC_FILE;
-
         public event EventHandler UpdateCompleted;
 
         public event ErrorEventHandler Error;
@@ -27,7 +25,7 @@ namespace Shadowsocks.Controller
 
                 string abpContent = Utils.UnGzip(Resources.abp_js);
                 abpContent = abpContent.Replace("__RULES__", SimpleJson.SimpleJson.SerializeObject(lines));
-                File.WriteAllText(PAC_FILE, abpContent, Encoding.UTF8);
+                File.WriteAllText(PACServer.GetPacFilePath(), abpContent, Encoding.UTF8);
                 if (UpdateCompleted != null)
                 {
                     UpdateCompleted(this, new EventArgs());

@@ -16,6 +16,7 @@ namespace Shadowsocks.Controller
     {
         public const int PORT = 8093;
         private const string DEFAULT_PAC_FILE = "pac.txt";
+        private static string pacFile;
         private static Configuration config;
 
         Socket _listener;
@@ -66,7 +67,7 @@ namespace Shadowsocks.Controller
             }
         }
 
-        public string GetPacFilePath()
+        public static string GetPacFilePath()
         {
             if (String.IsNullOrEmpty(pacFile))
             {
