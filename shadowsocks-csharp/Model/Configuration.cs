@@ -15,9 +15,9 @@ namespace Shadowsocks.Model
         public bool global;
         public bool enabled;
         public bool shareOverLan;
-        public int pacPort;
-        public int httpPort;
-        public bool updateCheck;
+        public int pacPort = PACServer.DEFAULT_PORT;
+        public int httpPort = PolipoRunner.DEFAULT_PORT;
+        public bool updateCheck = true;
         public bool isDefault;
 
         private static string CONFIG_FILE = "gui-config.json";
@@ -60,9 +60,6 @@ namespace Shadowsocks.Model
                 return new Configuration
                 {
                     index = 0,
-                    pacPort = PACServer.DEFAULT_PORT,
-                    httpPort = PolipoRunner.DEFAULT_PORT,
-                    updateCheck = true,
                     isDefault = true,
                     configs = new List<Server>()
                     {
