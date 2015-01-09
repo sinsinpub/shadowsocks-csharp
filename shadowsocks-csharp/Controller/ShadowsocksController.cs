@@ -74,6 +74,13 @@ namespace Shadowsocks.Controller
             return Configuration.Load();
         }
 
+        public void SaveProxyConfigs(Configuration config)
+        {
+            _config.pacPort = config.pacPort;
+            _config.httpPort = config.httpPort;
+            SaveServers(config.configs);
+        }
+
         public void SaveServers(List<Server> servers)
         {
             _config.configs = servers;
@@ -197,26 +204,40 @@ namespace Shadowsocks.Controller
             // though UseShellExecute is set to true now
             // http://stackoverflow.com/questions/10235093/socket-doesnt-close-after-application-exits-if-a-launched-process-is-open
             polipoRunner.Stop();
+
+            int bindingPort = _config.httpPort;
             try
             {
-                polipoRunner.Start(_config);
+                // Start polipo (HTTP proxy) if and only if configured port is in range
+                // To disable HTTP proxy, user could set port to 0
+                if (bindingPort > 0 && bindingPort <= 65535)
+                {
+                    // No exception will be thrown here as forked polipo process just exits with delay
+                    polipoRunner.Start(_config);
+                }
+                else
+                {
+                    if (_config.enabled)
+                    {
+                        throw new Exception(I18N.GetString("HTTP proxy port out of range"));
+                    }
+                }
 
+                // Start sslocal SOCKS5 proxy
+                bindingPort = _config.configs[_config.index].local_port;
                 local = new Local(_config);
                 local.Start();
-                pacServer.Start(_config);
+
+                // Start PAC server if HTTP proxy is also running
+                bindingPort = _config.pacPort;
+                if (polipoRunner.isRunning())
+                {
+                    pacServer.Start(_config);
+                }
             }
             catch (Exception e)
             {
-                // translate Microsoft language into human language
-                // i.e. An attempt was made to access a socket in a way forbidden by its access permissions => Port already in use
-                if (e is SocketException)
-                {
-                    SocketException se = (SocketException)e;
-                    if (se.SocketErrorCode == SocketError.AccessDenied)
-                    {
-                        e = new Exception(I18N.GetString("Port already in use"), e);
-                    }
-                }
+                e = WrapSocketAccessDeniedException(e, bindingPort);
                 Logging.LogUsefulException(e);
                 ReportError(e);
             }
@@ -230,6 +251,20 @@ namespace Shadowsocks.Controller
             Util.Utils.ReleaseMemory();
         }
 
+        private Exception WrapSocketAccessDeniedException(Exception ex, int portNumber)
+        {
+            // translate Microsoft language into human language
+            // i.e. An attempt was made to access a socket in a way forbidden by its access permissions => Port already in use
+            if (ex is SocketException)
+            {
+                SocketException se = (SocketException) ex;
+                if (se.SocketErrorCode == SocketError.AccessDenied)
+                {
+                    ex = new Exception(String.Format(I18N.GetString("Port {0} already in use"), portNumber), ex);
+                }
+            }
+            return ex;
+        }
 
         protected void SaveConfig(Configuration newConfig)
         {
@@ -242,7 +277,7 @@ namespace Shadowsocks.Controller
         {
             if (_config.enabled)
             {
-                SystemProxy.Enable(_config.global);
+                SystemProxy.Enable(_config);
                 _systemProxyIsDirty = true;
             }
             else

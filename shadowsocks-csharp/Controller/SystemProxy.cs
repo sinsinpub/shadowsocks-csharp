@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
+using Shadowsocks.Model;
 
 namespace Shadowsocks.Controller
 {
@@ -24,27 +25,27 @@ namespace Shadowsocks.Controller
             _refreshReturn = InternetSetOption(IntPtr.Zero, INTERNET_OPTION_REFRESH, IntPtr.Zero, 0);
         }
 
-        public static void Enable(bool global)
+        public static void Enable(Configuration configuration)
         {
             try
             {
                 RegistryKey registry =
                     Registry.CurrentUser.OpenSubKey("Software\\Microsoft\\Windows\\CurrentVersion\\Internet Settings",
                         true);
-                if (global)
+                if (configuration.global)
                 {
                     registry.SetValue("ProxyEnable", 1);
-                    registry.SetValue("ProxyServer", "127.0.0.1:8123");
+                    registry.SetValue("ProxyServer", "127.0.0.1:" + configuration.httpPort);
                     registry.SetValue("AutoConfigURL", "");
                 }
                 else
                 {
                     registry.SetValue("ProxyEnable", 0);
                     registry.SetValue("ProxyServer", "");
-                    registry.SetValue("AutoConfigURL", "http://127.0.0.1:8093/pac?t=" + GetTimestamp(DateTime.Now));
+                    registry.SetValue("AutoConfigURL", "http://127.0.0.1:" + configuration.pacPort + "/pac?t=" + GetTimestamp(DateTime.Now));
                 }
                 SystemProxy.NotifyIE();
-                //Must Notify IE first, or the connections do not chanage
+                // Must Notify IE first, or the connections do not chanage
                 CopyProxySettingFromLan();
             }
             catch (Exception)

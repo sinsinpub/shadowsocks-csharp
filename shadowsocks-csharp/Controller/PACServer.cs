@@ -14,8 +14,8 @@ namespace Shadowsocks.Controller
 {
     class PACServer
     {
-        private static int PORT = 8093;
-        public static string PAC_FILE = "pac.txt";
+        public const int DEFAULT_PORT = 8093;
+        public const string PAC_FILE = "pac.txt";
         private static Configuration config;
 
         Socket _listener;
@@ -34,11 +34,11 @@ namespace Shadowsocks.Controller
                 IPEndPoint localEndPoint = null;
                 if (configuration.shareOverLan)
                 {
-                    localEndPoint = new IPEndPoint(IPAddress.Any, PORT);
+                    localEndPoint = new IPEndPoint(IPAddress.Any, configuration.pacPort);
                 }
                 else
                 {
-                    localEndPoint = new IPEndPoint(IPAddress.Loopback, PORT);
+                    localEndPoint = new IPEndPoint(IPAddress.Loopback, configuration.pacPort);
                 }
 
                 // Bind the socket to the local endpoint and listen for incoming connections.
@@ -215,7 +215,7 @@ Connection: Close
 
         private string GetPACAddress(byte[] requestBuf, IPEndPoint localEndPoint)
         {
-            string proxy = "PROXY " + localEndPoint.Address + ":8123;";
+            string proxy = "PROXY " + localEndPoint.Address + ":" + config.httpPort + ";";
             //try
             //{
             //    string requestString = Encoding.UTF8.GetString(requestBuf);

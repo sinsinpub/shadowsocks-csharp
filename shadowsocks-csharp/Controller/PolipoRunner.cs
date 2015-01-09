@@ -11,6 +11,7 @@ namespace Shadowsocks.Controller
 {
     class PolipoRunner
     {
+        public static int DEFAULT_PORT = 8123;
         private Process _process;
 
         public void Start(Configuration configuration)
@@ -26,15 +27,17 @@ namespace Shadowsocks.Controller
                         p.Kill();
                         p.WaitForExit();
                     }
-                    catch (Exception e)
+                    catch (Exception)
                     {
-                        Console.WriteLine(e.ToString());
+                        // Kill polipo quietly
+                        // Console.WriteLine(e.ToString());
                     }
                 }
                 string temppath = Path.GetTempPath();
                 string polipoConfig = Resources.polipo_config; 
                 polipoConfig = polipoConfig.Replace("__SOCKS_PORT__", server.local_port.ToString());
                 polipoConfig = polipoConfig.Replace("__POLIPO_BIND_IP__", configuration.shareOverLan ? "0.0.0.0" : "127.0.0.1");
+                polipoConfig = polipoConfig.Replace("__POLIPO_HTTP_PORT__", configuration.httpPort.ToString());
                 FileManager.ByteArrayToFile(temppath + "/polipo.conf", System.Text.Encoding.UTF8.GetBytes(polipoConfig));
                 FileManager.UncompressFile(temppath + "/ss_polipo.exe", Resources.polipo_exe);
 
@@ -55,17 +58,26 @@ namespace Shadowsocks.Controller
         {
             if (_process != null)
             {
-                try
+                if (isRunning())
                 {
-                    _process.Kill();
-                    _process.WaitForExit();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
+                    try
+                    {
+                        _process.Kill();
+                        _process.WaitForExit();
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.ToString());
+                    }
                 }
                 _process = null;
             }
         }
+
+        public bool isRunning()
+        {
+            return _process == null ? false : !_process.HasExited;
+        }
+
     }
 }
