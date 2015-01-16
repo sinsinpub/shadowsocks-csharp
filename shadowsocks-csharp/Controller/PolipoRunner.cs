@@ -13,6 +13,20 @@ namespace Shadowsocks.Controller
     {
         public const int DEFAULT_PORT = 8123;
         private Process _process;
+        private static string temppath;
+
+        static PolipoRunner()
+        {
+            temppath = Path.GetTempPath();
+            try
+            {
+                FileManager.UncompressFile(temppath + "/ss_polipo.exe", Resources.polipo_exe);
+            }
+            catch (IOException e)
+            {
+                Logging.LogUsefulException(e);
+            }
+        }
 
         public void Start(Configuration configuration)
         {
@@ -33,13 +47,11 @@ namespace Shadowsocks.Controller
                         // Console.WriteLine(e.ToString());
                     }
                 }
-                string temppath = Path.GetTempPath();
                 string polipoConfig = Resources.polipo_config; 
                 polipoConfig = polipoConfig.Replace("__SOCKS_PORT__", server.local_port.ToString());
                 polipoConfig = polipoConfig.Replace("__POLIPO_BIND_IP__", configuration.shareOverLan ? "0.0.0.0" : "127.0.0.1");
                 polipoConfig = polipoConfig.Replace("__POLIPO_HTTP_PORT__", configuration.httpPort.ToString());
                 FileManager.ByteArrayToFile(temppath + "/polipo.conf", System.Text.Encoding.UTF8.GetBytes(polipoConfig));
-                FileManager.UncompressFile(temppath + "/ss_polipo.exe", Resources.polipo_exe);
 
                 _process = new Process();
                 // Configure the process using the StartInfo properties.
